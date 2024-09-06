@@ -1,0 +1,2 @@
+# Retail-Sales-Markdown-Prediction-Using-ANN-with-TensorFlow--AWS-Deployment
+The Retail Sales Forecasting project aims to build a robust Artificial Neural Network (ANN) model to accurately predict department-level sales for each store over the next year. By leveraging historical sales data and other key factors such as promotions, markdowns, and seasonal trends, this model will provide precise forecasts for the same.
