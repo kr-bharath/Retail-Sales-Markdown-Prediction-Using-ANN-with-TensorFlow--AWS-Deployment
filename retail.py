@@ -14,6 +14,13 @@ st.markdown('<h1 style="color:#7433ff;text-align:center;">Retail Sales Predictio
 # Load the data
 df = pd.read_csv('D:/Final Project/Retail-Sales-Markdown-Prediction-Using-ANN-with-TensorFlow--AWS-Deployment/retail_sale_predict.csv')
 
+class columns:
+
+    Type=['A','B','C']
+    Type_encoded={'A':1,'B':2,'C':3}
+    Holiday=['False','True']
+    Holiday_encoded={'False':0,'True':1}
+
 # Function to load model and scaler
 @st.cache_resource
 def load_model_and_scaler():
@@ -33,10 +40,10 @@ with st.form('price_prediction_form'):
 
     with col1:
         Store = st.number_input('Store', min_value=1, max_value=45, step=1)
-        Type = st.selectbox('Store Type', ['1', '2', '3'])
+        Type = st.selectbox('**Type**',columns.Type)
         Size = st.selectbox('Store Size', sorted(df['Size'].unique()))
         Dept = st.number_input('Department', min_value=1, max_value=100, step=1)
-        IsHoliday = st.selectbox('Is Holiday Week', ['0', '1'])
+        IsHoliday = st.selectbox('**IsHoliday**',columns.Holiday)
         Temperature = st.number_input('Temperature', min_value=0.0)
         Fuel_Price = st.number_input('Fuel Price', min_value=0.0)
         MarkDown1 = st.number_input('Markdown 1', min_value=0.0)
@@ -66,31 +73,12 @@ with st.form('price_prediction_form'):
 
 # Prediction logic
 if submit_button:
+    IsHoliday=1 if IsHoliday=='Yes' else 0
+    Type= 1 if type == 'A' else 2 if type == 'B' else 3
     # Prepare input data for prediction
-    input_data = np.array([[Store, 
-                            Type,  # Keep the raw input Type
-                            Size, 
-                            Dept, 
-                            IsHoliday,  # Keep the raw input for IsHoliday
-                            Temperature, 
-                            Fuel_Price, 
-                            MarkDown1, 
-                            MarkDown2, 
-                            MarkDown3,
-                            MarkDown4, 
-                            MarkDown5, 
-                            CPI, 
-                            Unemployment, 
-                            Day, 
-                            Week, 
-                            Month, 
-                            Year, 
-                            lag_1_sales, 
-                            lag_1_markdown,
-                            markdown_holiday_interaction, 
-                            markdown_impacted, 
-                            days_until_holiday, 
-                            pre_holiday_sales_spike]])
+    input_data = np.array([[Store,Type,Size,Dept,IsHoliday,Temperature,Fuel_Price,MarkDown1,MarkDown2,MarkDown3,MarkDown4,MarkDown5, 
+                            CPI,Unemployment,Day,Week,Month,Year,lag_1_sales,lag_1_markdown,markdown_holiday_interaction,markdown_impacted, 
+                            days_until_holiday,pre_holiday_sales_spike]])
     
     # Scale input data
     scaled_input = scaler.transform(input_data)
